@@ -6,6 +6,7 @@
 ## Milestones
 
 1. October 15th: Turn in brainstorm to Jordan
+	a. Design holder and know camera configuration
 2. November 5th: Turn in abstract
 3. November 12th: Prototype due; demo to Jordan
 4. November 19th: Work through use cases; error handling; final touches
