@@ -2,8 +2,7 @@
 
 #Team: Route49
 #Names: Cindy Wong, Sonia Parra
-#Date Modified: 10-15-2015
-#Version Number: 1
+#Date Modified: 11-12-2015
 #Description: 
 
 import time
@@ -13,36 +12,63 @@ import cv2
 import matplotlib.pyplot as plt
 
 #------------Take picture with pi camera--------------
-#camera = picamera.PiCamera()
-#camera.resolution = (1024, 768)
-#camera.start_preview()
-#time.sleep(2)
-#filename = time.strftime("%Y%m%d-%H%M%S")
-#filename = 'test'
-#camera.capture(filename + ".jpg")
-#camera.stop_preview()
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+cv2.imshow('Sample', gray)
+cv2.waitKey(0)
+cap.release
+cv2.destroyAllWindows()
+
+cv2.imwrite('test.jpg', gray)
+
+
+#-----------Create Templates from base Image--------
+USBtemp = cv2.imread('template.jpg', 0)
+cv2.imshow('USB temp', USBtemp)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+USBtempWT = USBtemp[0:150, 150:525]
+cv2.imshow('USBtempWT', USBtempWT)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+cv2.imwrite('tempWT.jpg', USBtempWT)
+
+USBtempMnt = USBtemp[320:460, 150:525]
+cv2.imshow('USBtempMnt', USBtempMnt)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+cv2.imwrite('tempMnt.jpg', USBtempMnt)
 
 #------------Display Images to be Processed----------
 #filename = filename + '.jpg'
 #filename = '20151015-154636.jpg'
 #filename = 'DoubleControl.tif'
-filename = 'DoublePosSource.tif'
-img = cv2.imread(filename, 0)
-cv2.imshow('image', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#filename = 'DoublePosSource.tif'
+#img = cv2.imread(filename, 0)
+img = gray
+#cv2.imshow('image', img)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
 #-------------Extract ROI-----------------------------
-templateWT = cv2.imread('WTControl.tif', 0)	#wild type control image
-templateMnt = cv2.imread('MntControl.tif', 0)	#mutant control image
+#templateWT = cv2.imread('WTControl.tif', 0)	#wild type control image
+#templateMnt = cv2.imread('MntControl.tif', 0)	#mutant control image
+templateWT = USBtempWT
+templateMnt = USBtempMnt
 
-cv2.imshow('templateWT', templateWT)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
 
-cv2.imshow('templateMnt', templateMnt)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow('templateWT', templateWT)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
+
+#cv2.imshow('templateMnt', templateMnt)
+#cv2.waitKey(0)
+#cv2.destroyAllWindows()
 
 #-------------Template Matching-----------------------
 #width and height of ROI
@@ -131,11 +157,12 @@ templatesumWT = 0
 linesumMnt = 0
 templatesumMnt = 0
 
-for i in range(200):
-     linesumWT = linesumWT + lineWT[i]
-     templatesumWT = templatesumWT + templatelineWT[i]
-     linesumMnt = linesumMnt + lineMnt[i]
-     templatesumMnt = templatesumMnt + templatelineMnt[i]
+for i in range(100):
+     for j in range(200):
+          linesumWT = linesumWT + equWT[i,j]
+          templatesumWT = templatesumWT + templateWT[i,j]
+          linesumMnt = linesumMnt + equMnt[i,j]
+          templatesumMnt = templatesumMnt + templateMnt[i,j]
 print linesumWT
 print templatesumWT
 print linesumMnt
