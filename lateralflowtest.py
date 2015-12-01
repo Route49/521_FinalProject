@@ -22,7 +22,7 @@ cv2.waitKey(0)
 cap.release
 cv2.destroyAllWindows()
 
-cv2.imwrite('test.jpg', gray)
+cv2.imwrite('testab.jpg', gray)
 
 
 #-----------Create Templates from base Image--------
